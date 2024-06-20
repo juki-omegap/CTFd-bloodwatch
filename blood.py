@@ -7,10 +7,8 @@ import json
 # Constants
 URL = "http://localhost:8000"
 API_URL = "/api/v1"
-URL = "http://s2gctf.ncr.ntnu.no/play"
-API_URL = "/play/api/v1"
+URL = "http://51.120.3.195"
 LIVESCOREBOARD_URL = "http://localhost:3000"
-LIVESCOREBOARD_URL = "https://livescoreboard.ctf.itemize.no"
 team_type = "user" # team | user
 
 # Global data log
@@ -65,7 +63,7 @@ while True:
         while True:
             print(".", end="", flush=True)
             time.sleep(5)
-            
+
             send_scoreboard()
 
             # Check solves

@@ -10,9 +10,7 @@
     "serve": "npm run build && npm run preview"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^1.0.0-beta.3",
-    "echarts": "^5.3.3",
-    "echarts-for-react": "^3.0.2",
+    "@formkit/auto-animate": "^0.8.2",
     "preact": "^10.10.1",
     "react-rewards": "^2.0.4",
     "socket.io-client": "^4.5.1"

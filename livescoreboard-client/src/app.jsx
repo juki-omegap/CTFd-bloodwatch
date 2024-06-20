@@ -1,5 +1,5 @@
 import { useState, useEffect } from "preact/hooks";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useAutoAnimate } from "@formkit/auto-animate/preact";
 import { useReward } from "react-rewards";
 import io from "socket.io-client";
 
@@ -57,7 +57,6 @@ const App = () => {
 
 	useEffect(() => {
 		const newSocket = io(`http://${window.location.hostname}:3000`);
-		// const newSocket = io(`https://livescoreboard.ctf.itemize.no`);
 		setSocket(newSocket);
 
 		// Attach audio to window object
@@ -101,22 +100,18 @@ const App = () => {
 
 	// Play pwnage.mp3
 	useEffect(() => {
-		if (nums.length === 0 || playing3 || playing2 || playing1) return;
-		if (!(nums[0].type === "ownage")) return;
-		setNums((nums) => {
-			if (nums.length >= 1 && !playing1) {
-				reward();
-				toggle1();
-				setOwnageInfo(nums[0]);
-			}
-			return nums.slice(1);
-		});
-	}, [playing3, playing2, playing1, nums, setNums]);
-
-	useEffect(() => {
 		console.log(playing1, playing2, nums);
 		if (nums.length === 0 || playing3 || playing2 || playing1) return;
-		if (nums[0].type == "pwn") {
+		if (nums[0].type === "ownage") {
+			setNums((nums) => {
+				if (nums.length >= 1 && !playing1) {
+					reward();
+					toggle1();
+					setOwnageInfo(nums[0]);
+				}
+				return nums.slice(1);
+			});
+		} else if (nums[0].type == "pwn") {
 			if (playing2) return;
 			setNums((nums) => {
 				if (nums.length >= 1 && !playing3) {
@@ -140,11 +135,15 @@ const App = () => {
 
 	return (
 		<div>
-			<h1>Scoreboard - S2G 2023</h1>
+			<h1>Live Scoreboard</h1>
+			<div>
+				<p>"Let the spirit of competition drive you to new heights, and may your skills and teamwork lead you to victory."</p>
+			</div>
+			<br />
 			<span id="rewardId" class="reward" />
 			{playing1 && nums.length >= 0 && (
 				<Popup
-					color={colors}
+					color={colors[0]}
 					text={`${ownageInfo.team.name} solved all challenges!`}
 					svg="cup"
 				/>
@@ -152,9 +151,8 @@ const App = () => {
 			{playing2 && nums.length >= 0 && (
 				<Popup
 					color={"tomato"}
-					text={`${bloodInfo?.team?.name || ""} first blooded "${
-						bloodInfo?.challenge || ""
-					}"!`}
+					text={`${bloodInfo?.team?.name || ""} first blooded "${bloodInfo?.challenge || ""
+						}"!`}
 					svg="blood"
 				/>
 			)}
@@ -163,13 +161,13 @@ const App = () => {
 				ref={parent}
 			>
 				<div ref={scoreboard1}>
-					<Score user={{ name: "User", score: "Score", placement: "No" }} />
+					<Score user={{ name: "Team", score: "Score", placement: "No" }} />
 					{scoreboard.slice(0, max).map((user, placement) => (
 						<Score user={{ ...user, placement: placement + 1 }} key={user.id} />
 					))}
 				</div>
 				<div ref={scoreboard2} hidden={scoreboard.length <= max}>
-					<Score user={{ name: "User", score: "Score", placement: "No" }} />
+					<Score user={{ name: "Team", score: "Score", placement: "No" }} />
 					{scoreboard.slice(max, max * 2).map((user, placement) => (
 						<Score
 							user={{ ...user, placement: placement + 1 + max }}

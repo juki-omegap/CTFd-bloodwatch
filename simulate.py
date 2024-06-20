@@ -3,7 +3,6 @@ import sys
 
 # Constants
 LIVESCOREBOARD_URL = "http://localhost:3000"
-# LIVESCOREBOARD_URL = "https://livescoreboard.ctf.itemize.no"
 
 team = {"name": "Dummy", "id": 1}
 challenge = "Dummy challenge"

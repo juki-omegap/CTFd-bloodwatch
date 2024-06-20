@@ -5,15 +5,11 @@ import bodyParser from "body-parser";
 import { Server } from "socket.io";
 
 let scoreboard = [];
-let dev = process.env.DEV || false;
-console.log("DEV MODE:", dev);
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// Configuring json response
 app.set("json spaces", 2);
 
 const server = http.createServer(app);
@@ -53,6 +49,13 @@ app.post("/blood", (req, res) => {
 app.post("/pwn", (req, res) => {
 	const { team, challenge } = req.body;
 	io.emit("pwn", { team: team, challenge: challenge });
+	updateScoreboard(io);
+	res.json({ status: "ok" });
+});
+
+app.post("/fullclear", (req, res) => {
+	const { team, challenge } = req.body;
+	io.emit("ownage", { team: team, challenge: challenge });
 	updateScoreboard(io);
 	res.json({ status: "ok" });
 });
